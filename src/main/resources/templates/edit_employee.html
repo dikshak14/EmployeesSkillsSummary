@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Employee | Employee Skills Summary</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 850px;
+            background: white;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(15, 23, 42, 0.12);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 30px 35px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .employee-id {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 13px;
+            background: rgba(255,255,255,0.18);
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .form-container {
+            padding: 35px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #dbe2ea;
+            border-radius: 10px;
+            background: #f8fafc;
+            outline: none;
+            font-size: 14px;
+            transition: 0.25s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #6366f1;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.10);
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* ==============================
+           VALIDATION ERROR
+        ============================== */
+
+        .error-message {
+            margin-top: 6px;
+            color: #dc2626;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .has-error {
+            border-color: #ef4444 !important;
+            background: #fff7f7 !important;
+        }
+
+        .has-error:focus {
+            border-color: #dc2626 !important;
+            box-shadow: 0 0 0 4px rgba(220, 38, 38, 0.10) !important;
+        }
+
+        /* ==============================
+           BUTTONS
+        ============================== */
+
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn {
+            padding: 13px 25px;
+            border-radius: 10px;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .cancel {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .cancel:hover {
+            background: #e2e8f0;
+        }
+
+        .update {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.25);
+        }
+
+        .update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.35);
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 700px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full-width {
+                grid-column: span 1;
+            }
+
+            .form-container {
+                padding: 25px 20px;
+            }
+
+            .header {
+                padding: 25px 20px;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+    <!-- ==============================
+         HEADER
+    ============================== -->
+
+    <div class="header">
+
+        <h1>✏️ Edit Employee</h1>
+
+        <p>
+            Update employee information and skill details.
+        </p>
+
+        <span class="employee-id">
+
+            Employee ID:
+            <span th:text="${employee.id}"></span>
+
+        </span>
+
+    </div>
+
+
+    <div class="form-container">
+
+        <!-- ==============================
+             EDIT FORM
+        ============================== -->
+
+        <form
+                th:action="@{/admin/update/{id}(id=${employee.id})}"
+                th:object="${employee}"
+                method="post">
+
+            <div class="form-grid">
+
+                <!-- ==============================
+                     NAME
+                ============================== -->
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Employee Name
+                    </label>
+
+                    <input
+                            type="text"
+                            id="name"
+                            th:field="*{name}"
+                            th:classappend="${#fields.hasErrors('name')} ? 'has-error' : ''"
+                            placeholder="Enter employee name"
+                            required>
+
+                    <div
+                            class="error-message"
+                            th:if="${#fields.hasErrors('name')}"
+                            th:errors="*{name}">
+                    </div>
+
+                </div>
+
+
+                <!-- ==============================
+                     EMAIL
+                ============================== -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                            type="email"
+                            id="email"
+                            th:field="*{email}"
+                            th:classappend="${#fields.hasErrors('email')} ? 'has-error' : ''"
+                            placeholder="Enter email address"
+                            required>
+
+                    <div
+                            class="error-message"
+                            th:if="${#fields.hasErrors('email')}"
+                            th:errors="*{email}">
+                    </div>
+
+                </div>
+
+
+                <!-- ==============================
+                     DEPARTMENT
+                ============================== -->
+
+                <div class="form-group">
+
+                    <label for="department">
+                        Department
+                    </label>
+
+                    <select
+                            id="department"
+                            th:field="*{department}"
+                            th:classappend="${#fields.hasErrors('department')} ? 'has-error' : ''"
+                            required>
+
+                        <option value="">
+                            Select Department
+                        </option>
+
+                        <option value="IT">
+                            IT
+                        </option>
+
+                        <option value="HR">
+                            HR
+                        </option>
+
+                        <option value="Finance">
+                            Finance
+                        </option>
+
+                        <option value="Marketing">
+                            Marketing
+                        </option>
+
+                        <option value="Sales">
+                            Sales
+                        </option>
+
+                        <option value="Operations">
+                            Operations
+                        </option>
+
+                    </select>
+
+                    <div
+                            class="error-message"
+                            th:if="${#fields.hasErrors('department')}"
+                            th:errors="*{department}">
+                    </div>
+
+                </div>
+
+
+                <!-- ==============================
+                     SKILL LEVEL
+                ============================== -->
+
+                <div class="form-group">
+
+                    <label for="skillLevel">
+                        Skill Level
+                    </label>
+
+                    <select
+                            id="skillLevel"
+                            th:field="*{skillLevel}"
+                            th:classappend="${#fields.hasErrors('skillLevel')} ? 'has-error' : ''"
+                            required>
+
+                        <option value="">
+                            Select Skill Level
+                        </option>
+
+                        <option value="Beginner">
+                            Beginner
+                        </option>
+
+                        <option value="Intermediate">
+                            Intermediate
+                        </option>
+
+                        <option value="Advanced">
+                            Advanced
+                        </option>
+
+                        <option value="Expert">
+                            Expert
+                        </option>
+
+                    </select>
+
+                    <div
+                            class="error-message"
+                            th:if="${#fields.hasErrors('skillLevel')}"
+                            th:errors="*{skillLevel}">
+                    </div>
+
+                </div>
+
+
+                <!-- ==============================
+                     SKILLS
+                ============================== -->
+
+                <div class="form-group full-width">
+
+                    <label for="skills">
+                        Skills
+                    </label>
+
+                    <textarea
+                            id="skills"
+                            th:field="*{skills}"
+                            th:classappend="${#fields.hasErrors('skills')} ? 'has-error' : ''"
+                            placeholder="Example: Java, Spring Boot, MySQL"
+                            required></textarea>
+
+                    <div
+                            class="error-message"
+                            th:if="${#fields.hasErrors('skills')}"
+                            th:errors="*{skills}">
+                    </div>
+
+                </div>
+
+
+                <!-- ==============================
+                     TRAINING
+                ============================== -->
+
+                <div class="form-group full-width">
+
+                    <label for="trainingNeeded">
+                        Training Needed
+                    </label>
+
+                    <select
+                            id="trainingNeeded"
+                            th:field="*{trainingNeeded}"
+                            th:classappend="${#fields.hasErrors('trainingNeeded')} ? 'has-error' : ''"
+                            required>
+
+                        <option value="">
+                            Select Training Requirement
+                        </option>
+
+                        <option value="Yes">
+                            Yes
+                        </option>
+
+                        <option value="No">
+                            No
+                        </option>
+
+                    </select>
+
+                    <div
+                            class="error-message"
+                            th:if="${#fields.hasErrors('trainingNeeded')}"
+                            th:errors="*{trainingNeeded}">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ==============================
+                 BUTTONS
+            ============================== -->
+
+            <div class="buttons">
+
+                <a
+                        href="/admin/dashboard"
+                        class="btn cancel">
+
+                    ← Cancel
+
+                </a>
+
+
+                <button
+                        type="submit"
+                        class="btn update">
+
+                    ✓ Update Employee
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

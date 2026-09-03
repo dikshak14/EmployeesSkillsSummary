@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Employee Skills Summary | Login</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            font-family: "Inter", sans-serif;
+
+            background:
+                    radial-gradient(circle at 10% 20%, rgba(99,102,241,.20), transparent 30%),
+                    radial-gradient(circle at 90% 80%, rgba(14,165,233,.18), transparent 30%),
+                    linear-gradient(135deg, #eef2ff, #f8fafc);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 30px;
+
+            color: #172033;
+
+        }
+
+
+        /* MAIN CARD */
+
+        .login-container {
+
+            width: 100%;
+            max-width: 1100px;
+
+            min-height: 650px;
+
+            display: flex;
+
+            background: rgba(255,255,255,.92);
+
+            border-radius: 30px;
+
+            overflow: hidden;
+
+            box-shadow:
+                    0 30px 80px rgba(15,23,42,.15),
+                    0 8px 25px rgba(15,23,42,.06);
+
+            backdrop-filter: blur(15px);
+
+        }
+
+
+        /* LEFT SECTION */
+
+        .left-section {
+
+            width: 50%;
+
+            position: relative;
+
+            padding: 65px;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            overflow: hidden;
+
+            color: white;
+
+            background:
+                    linear-gradient(
+                            145deg,
+                            #312e81,
+                            #4338ca 45%,
+                            #2563eb
+                    );
+
+        }
+
+
+        /* Decorative circles */
+
+        .circle {
+
+            position: absolute;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,.08);
+
+        }
+
+        .circle-one {
+
+            width: 350px;
+            height: 350px;
+
+            top: -150px;
+            right: -150px;
+
+        }
+
+        .circle-two {
+
+            width: 260px;
+            height: 260px;
+
+            bottom: -120px;
+            left: -120px;
+
+        }
+
+        .circle-three {
+
+            width: 120px;
+            height: 120px;
+
+            top: 45%;
+            right: 15%;
+
+            background: rgba(255,255,255,.05);
+
+        }
+
+
+        .left-content {
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+
+        /* LOGO */
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            margin-bottom: 55px;
+
+        }
+
+        .logo-icon {
+
+            width: 55px;
+            height: 55px;
+
+            border-radius: 16px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 26px;
+
+            background: rgba(255,255,255,.16);
+
+            border: 1px solid rgba(255,255,255,.2);
+
+            box-shadow: 0 8px 25px rgba(0,0,0,.12);
+
+        }
+
+        .logo-text {
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            letter-spacing: -.3px;
+
+        }
+
+
+        /* LEFT CONTENT */
+
+        .left-section h1 {
+
+            font-size: 42px;
+
+            line-height: 1.15;
+
+            font-weight: 800;
+
+            letter-spacing: -1.5px;
+
+            margin-bottom: 20px;
+
+        }
+
+        .left-section h1 span {
+
+            color: #bfdbfe;
+
+        }
+
+        .left-section p {
+
+            max-width: 430px;
+
+            font-size: 15px;
+
+            line-height: 1.8;
+
+            color: rgba(255,255,255,.82);
+
+            margin-bottom: 42px;
+
+        }
+
+
+        /* FEATURES */
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+            margin-bottom: 18px;
+
+            font-size: 14px;
+
+            font-weight: 500;
+
+            color: rgba(255,255,255,.9);
+
+        }
+
+        .feature-icon {
+
+            width: 35px;
+            height: 35px;
+
+            border-radius: 10px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(255,255,255,.12);
+
+            border: 1px solid rgba(255,255,255,.1);
+
+            font-size: 15px;
+
+        }
+
+
+        /* RIGHT SECTION */
+
+        .right-section {
+
+            width: 50%;
+
+            padding: 65px 75px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            justify-content: center;
+
+            background: white;
+
+        }
+
+
+        .welcome {
+
+            margin-bottom: 35px;
+
+        }
+
+        .welcome h2 {
+
+            font-size: 32px;
+
+            font-weight: 800;
+
+            letter-spacing: -.8px;
+
+            color: #111827;
+
+            margin-bottom: 10px;
+
+        }
+
+        .welcome p {
+
+            font-size: 14px;
+
+            color: #667085;
+
+            line-height: 1.6;
+
+        }
+
+
+        /* ALERT */
+
+        .alert {
+
+            padding: 13px 15px;
+
+            border-radius: 12px;
+
+            margin-bottom: 20px;
+
+            font-size: 13px;
+
+        }
+
+        .alert-error {
+
+            background: #fff1f2;
+
+            border: 1px solid #fecdd3;
+
+            color: #be123c;
+
+        }
+
+        .alert-success {
+
+            background: #ecfdf5;
+
+            border: 1px solid #a7f3d0;
+
+            color: #047857;
+
+        }
+
+
+        /* FORM */
+
+        .form-group {
+
+            margin-bottom: 22px;
+
+        }
+
+        .form-group label {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            color: #344054;
+
+            margin-bottom: 9px;
+
+        }
+
+
+        .input-wrapper {
+
+            position: relative;
+
+        }
+
+
+        .input-icon {
+
+            position: absolute;
+
+            left: 16px;
+
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            color: #98a2b3;
+
+            font-size: 17px;
+
+            pointer-events: none;
+
+        }
+
+
+        .form-control {
+
+            width: 100%;
+
+            height: 54px;
+
+            border: 1px solid #d0d5dd;
+
+            border-radius: 13px;
+
+            outline: none;
+
+            padding: 0 17px 0 47px;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            color: #101828;
+
+            background: #fff;
+
+            transition: .25s ease;
+
+        }
+
+
+        .form-control::placeholder {
+
+            color: #98a2b3;
+
+        }
+
+
+        .form-control:hover {
+
+            border-color: #98a2b3;
+
+        }
+
+
+        .form-control:focus {
+
+            border-color: #4f46e5;
+
+            box-shadow:
+                    0 0 0 4px rgba(79,70,229,.10);
+
+        }
+
+
+        /* BUTTON */
+
+        .login-button {
+
+            width: 100%;
+
+            height: 55px;
+
+            border: none;
+
+            border-radius: 13px;
+
+            margin-top: 7px;
+
+            cursor: pointer;
+
+            color: white;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            letter-spacing: .2px;
+
+            background:
+                    linear-gradient(
+                            135deg,
+                            #4f46e5,
+                            #2563eb
+                    );
+
+            box-shadow:
+                    0 10px 25px rgba(37,99,235,.22);
+
+            transition: .25s ease;
+
+        }
+
+
+        .login-button:hover {
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                    0 15px 30px rgba(37,99,235,.30);
+
+        }
+
+
+        .login-button:active {
+
+            transform: translateY(0);
+
+        }
+
+
+        /* REGISTER */
+
+        .register {
+
+            text-align: center;
+
+            margin-top: 27px;
+
+            font-size: 13px;
+
+            color: #667085;
+
+        }
+
+        .register a {
+
+            color: #4338ca;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+        }
+
+        .register a:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        /* FOOTER */
+
+        .footer {
+
+            text-align: center;
+
+            margin-top: 40px;
+
+            font-size: 11px;
+
+            color: #98a2b3;
+
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+
+            body {
+
+                padding: 15px;
+
+            }
+
+            .login-container {
+
+                flex-direction: column;
+
+                min-height: auto;
+
+            }
+
+            .left-section,
+            .right-section {
+
+                width: 100%;
+
+            }
+
+            .left-section {
+
+                padding: 45px 35px;
+
+            }
+
+            .left-section h1 {
+
+                font-size: 34px;
+
+            }
+
+            .logo {
+
+                margin-bottom: 35px;
+
+            }
+
+            .right-section {
+
+                padding: 45px 35px;
+
+            }
+
+        }
+
+
+        @media (max-width: 480px) {
+
+            .left-section {
+
+                padding: 35px 25px;
+
+            }
+
+            .right-section {
+
+                padding: 35px 25px;
+
+            }
+
+            .left-section h1 {
+
+                font-size: 29px;
+
+            }
+
+            .welcome h2 {
+
+                font-size: 27px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="login-container">
+
+
+    <!-- LEFT SIDE -->
+
+    <section class="left-section">
+
+        <div class="circle circle-one"></div>
+        <div class="circle circle-two"></div>
+        <div class="circle circle-three"></div>
+
+
+        <div class="left-content">
+
+
+            <div class="logo">
+
+                <div class="logo-icon">
+                    📊
+                </div>
+
+                <div class="logo-text">
+                    Employee Skills Summary
+                </div>
+
+            </div>
+
+
+            <h1>
+
+                Build Skills.<br>
+
+                <span>Build Success.</span>
+
+            </h1>
+
+
+            <p>
+
+                A centralized employee skill management
+                platform designed to help organizations
+                understand talent, identify skill gaps,
+                and support professional growth.
+
+            </p>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ✓
+                </div>
+
+                <span>
+                    Manage employee profiles
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ★
+                </div>
+
+                <span>
+                    Track employee skills and expertise
+                </span>
+
+            </div>
+
+
+            <div class="feature">
+
+                <div class="feature-icon">
+                    ↗
+                </div>
+
+                <span>
+                    Identify training requirements
+                </span>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- RIGHT SIDE -->
+
+    <section class="right-section">
+
+
+        <div class="welcome">
+
+            <h2>
+                Welcome back 👋
+            </h2>
+
+            <p>
+                Sign in to continue to your account.
+            </p>
+
+        </div>
+
+
+        <!-- ERROR MESSAGE -->
+
+        <div th:if="${param.error}"
+             class="alert alert-error">
+
+            <strong>Login unsuccessful.</strong><br>
+
+            Please check your email and password.
+
+        </div>
+
+
+        <!-- LOGOUT MESSAGE -->
+
+        <div th:if="${param.logout}"
+             class="alert alert-success">
+
+            You have been logged out successfully.
+
+        </div>
+
+
+
+        <!-- LOGIN FORM -->
+
+        <form th:action="@{/login}"
+              method="post">
+
+
+            <!-- EMAIL -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        ✉
+                    </span>
+
+                    <input
+                            id="email"
+                            type="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="Enter your email address"
+                            autocomplete="email"
+                            required>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PASSWORD -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        🔒
+                    </span>
+
+                    <input
+                            id="password"
+                            type="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BUTTON -->
+
+            <button
+                    type="submit"
+                    class="login-button">
+
+                Sign In to Dashboard
+
+            </button>
+
+
+        </form>
+
+
+
+        <!-- REGISTER -->
+
+        <div class="register">
+
+            Don't have an account?
+
+            <a th:href="@{/register}">
+                Create an account
+            </a>
+
+        </div>
+
+
+        <div class="footer">
+
+            Employee Skills Summary © 2026
+            <br>
+            Secure Employee Management System
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+</body>
+
+</html>
+</html>

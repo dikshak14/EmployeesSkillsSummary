@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit User | Admin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .header {
+            background: linear-gradient(135deg, #183f85, #2563eb);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.15);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        /* ==============================
+           BACK BUTTON
+        ============================== */
+
+        .top-actions {
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 11px 18px;
+            background: white;
+            color: #183f85;
+            text-decoration: none;
+            border-radius: 9px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(15, 23, 42, 0.08);
+        }
+
+        .back-btn:hover {
+            background: #f8fafc;
+        }
+
+        /* ==============================
+           CARD
+        ============================== */
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.10);
+        }
+
+        .card-title {
+            font-size: 23px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 25px;
+        }
+
+        /* ==============================
+           FORM
+        ============================== */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            height: 45px;
+            padding: 0 13px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            background: white;
+            color: #1e293b;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        .help-text {
+            margin-top: 7px;
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        /* ==============================
+           ROLE
+        ============================== */
+
+        .role-info {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #ede9fe;
+            color: #6d28d9;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ==============================
+           BUTTONS
+        ============================== */
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .save-btn {
+            flex: 1;
+            height: 45px;
+            border: none;
+            border-radius: 9px;
+            background: #2563eb;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .cancel-btn {
+            flex: 1;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: #64748b;
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .cancel-btn:hover {
+            background: #475569;
+        }
+
+        /* ==============================
+           PASSWORD NOTE
+        ============================== */
+
+        .password-note {
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            color: #1e40af;
+            padding: 14px;
+            border-radius: 9px;
+            margin-bottom: 22px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <div class="header">
+
+        <h1>
+            ✏️ Edit User
+        </h1>
+
+        <p>
+            Update registered user information and account role.
+        </p>
+
+    </div>
+
+
+    <!-- =========================================
+         BACK BUTTON
+    ========================================== -->
+
+    <div class="top-actions">
+
+        <a href="/admin/users"
+           class="back-btn">
+
+            ← Back to User Management
+
+        </a>
+
+    </div>
+
+
+    <!-- =========================================
+         EDIT CARD
+    ========================================== -->
+
+    <div class="card">
+
+        <div class="card-title">
+
+            User Information
+
+        </div>
+
+
+        <!-- PASSWORD INFORMATION -->
+
+        <div class="password-note">
+
+            🔐 Leave the password field empty if you do not want
+            to change the user's current password.
+
+        </div>
+
+
+        <!-- =====================================
+             FORM
+        ====================================== -->
+
+        <form
+                th:action="@{'/admin/users/update/' + ${user.id}}"
+                th:object="${user}"
+                method="post">
+
+
+            <!-- =================================
+                 FULL NAME
+            ================================== -->
+
+            <div class="form-group">
+
+                <label for="fullName">
+                    Full Name
+                </label>
+
+                <input
+                        type="text"
+                        id="fullName"
+                        th:field="*{fullName}"
+                        placeholder="Enter full name"
+                        required>
+
+            </div>
+
+
+            <!-- =================================
+                 EMAIL
+            ================================== -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                        type="email"
+                        id="email"
+                        th:field="*{email}"
+                        placeholder="Enter email address"
+                        required>
+
+            </div>
+
+
+            <!-- =================================
+                 ROLE
+            ================================== -->
+
+            <div class="form-group">
+
+                <label for="role">
+                    Account Role
+                </label>
+
+                <select
+                        id="role"
+                        th:field="*{role}"
+                        required>
+
+                    <option value="USER">
+                        USER
+                    </option>
+
+                    <option value="ADMIN">
+                        ADMIN
+                    </option>
+
+                </select>
+
+                <div
+                        class="role-info"
+                        th:text="'Current Role: ' + ${user.role}">
+
+                    Current Role: USER
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 PASSWORD
+            ================================== -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    New Password
+                </label>
+
+                <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter new password">
+
+                <div class="help-text">
+
+                    Leave blank to keep the existing password.
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================
+                 BUTTONS
+            ================================== -->
+
+            <div class="buttons">
+
+                <button
+                        type="submit"
+                        class="save-btn">
+
+                    💾 Save Changes
+
+                </button>
+
+
+                <a
+                        href="/admin/users"
+                        class="cancel-btn">
+
+                    Cancel
+
+                </a>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

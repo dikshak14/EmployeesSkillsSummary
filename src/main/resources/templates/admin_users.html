@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>User Management | Admin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            padding: 35px;
+        }
+
+        .container {
+            max-width: 1250px;
+            margin: auto;
+        }
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .header {
+            background: linear-gradient(135deg, #183f85, #2563eb);
+            color: white;
+            padding: 30px 35px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.15);
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+
+        /* ==============================
+           TOP ACTIONS
+        ============================== */
+
+        .top-actions {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .back-btn {
+            display: inline-block;
+            padding: 11px 18px;
+            background: white;
+            color: #183f85;
+            text-decoration: none;
+            border-radius: 9px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(15, 23, 42, 0.08);
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            background: #f8fafc;
+        }
+
+        /* ==============================
+           ERROR MESSAGE
+        ============================== */
+
+        .error-message {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            padding: 14px 18px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* ==============================
+           CARD
+        ============================== */
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.10);
+            overflow-x: auto;
+        }
+
+        .card-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 15px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1e293b;
+        }
+
+        .user-count {
+            background: #e8f0ff;
+            color: #2563eb;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ==============================
+           TABLE
+        ============================== */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1050px;
+        }
+
+        thead {
+            background: #f1f5f9;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            color: #475569;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #334155;
+            font-size: 14px;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        /* ==============================
+           ROLE BADGES
+        ============================== */
+
+        .role {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .role-admin {
+            background: #ede9fe;
+            color: #6d28d9;
+        }
+
+        .role-user {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        /* ==============================
+           ROLE FORM
+        ============================== */
+
+        .role-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        select {
+            height: 38px;
+            min-width: 105px;
+            padding: 0 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            background: white;
+            outline: none;
+            font-size: 13px;
+        }
+
+        select:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+        }
+
+        .update-btn {
+            height: 38px;
+            padding: 0 13px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .update-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        /* ==============================
+           ACTION BUTTONS
+        ============================== */
+
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .edit-btn {
+            display: inline-block;
+            padding: 9px 13px;
+            background: #f59e0b;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .edit-btn:hover {
+            background: #d97706;
+            transform: translateY(-1px);
+        }
+
+        .delete-btn {
+            display: inline-block;
+            padding: 9px 13px;
+            background: #ef4444;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        /* ==============================
+           CURRENT ACCOUNT
+        ============================== */
+
+        .protected-text {
+            color: #16a34a;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ==============================
+           EMPTY
+        ============================== */
+
+        .empty {
+            text-align: center;
+            padding: 35px;
+            color: #64748b;
+        }
+
+        /* ==============================
+           RESPONSIVE
+        ============================== */
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 25px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .card-title-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- =========================================
+         HEADER
+    ========================================== -->
+
+    <div class="header">
+
+        <h1>
+            👥 User Management
+        </h1>
+
+        <p>
+            Manage registered users and their roles.
+        </p>
+
+    </div>
+
+
+    <!-- =========================================
+         BACK BUTTON
+    ========================================== -->
+
+    <div class="top-actions">
+
+        <a href="/admin/dashboard"
+           class="back-btn">
+
+            ← Admin Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- =========================================
+         ERROR MESSAGE
+    ========================================== -->
+
+    <div class="error-message"
+         th:if="${param.error}"
+         th:text="${param.error == 'self-delete'}
+                    ? '⚠ You cannot delete your own currently logged-in admin account.'
+                    : 'An error occurred while processing the request.'">
+
+    </div>
+
+
+    <!-- =========================================
+         USERS CARD
+    ========================================== -->
+
+    <div class="card">
+
+
+        <div class="card-title-row">
+
+            <div class="card-title">
+
+                Registered Users
+
+            </div>
+
+            <div class="user-count"
+                 th:text="'Total Users: ' + ${#lists.size(users)}">
+
+                Total Users: 0
+
+            </div>
+
+        </div>
+
+
+        <div style="overflow-x:auto;">
+
+
+            <table>
+
+                <thead>
+
+                <tr>
+
+                    <th>ID</th>
+
+                    <th>Full Name</th>
+
+                    <th>Email</th>
+
+                    <th>Current Role</th>
+
+                    <th>Change Role</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                <!-- =====================================
+                     USER ROW
+                ====================================== -->
+
+                <tr th:each="user : ${users}">
+
+
+                    <!-- ID -->
+
+                    <td th:text="${user.id}">
+                        1
+                    </td>
+
+
+                    <!-- FULL NAME -->
+
+                    <td>
+
+                        <strong
+                                th:text="${user.fullName}">
+                            User Name
+                        </strong>
+
+                    </td>
+
+
+                    <!-- EMAIL -->
+
+                    <td th:text="${user.email}">
+                        user@gmail.com
+                    </td>
+
+
+                    <!-- CURRENT ROLE -->
+
+                    <td>
+
+                        <span
+                                class="role"
+                                th:classappend="${user.role == 'ADMIN'}
+                                    ? 'role-admin'
+                                    : 'role-user'"
+                                th:text="${user.role}">
+                            USER
+                        </span>
+
+                    </td>
+
+
+                    <!-- CHANGE ROLE -->
+
+                    <td>
+
+                        <form
+                                th:action="@{'/admin/users/update/' + ${user.id}}"
+                                method="post"
+                                class="role-form">
+
+                            <input
+                                    type="hidden"
+                                    name="fullName"
+                                    th:value="${user.fullName}">
+
+                            <input
+                                    type="hidden"
+                                    name="email"
+                                    th:value="${user.email}">
+
+                            <select name="role">
+
+                                <option
+                                        value="USER"
+                                        th:selected="${user.role == 'USER'}">
+                                    USER
+                                </option>
+
+                                <option
+                                        value="ADMIN"
+                                        th:selected="${user.role == 'ADMIN'}">
+                                    ADMIN
+                                </option>
+
+                            </select>
+
+                            <button
+                                    type="submit"
+                                    class="update-btn">
+
+                                Update
+
+                            </button>
+
+                        </form>
+
+                    </td>
+
+
+                    <!-- ACTION -->
+
+                    <td>
+
+                        <div class="actions">
+
+
+                            <!-- EDIT -->
+
+                            <a
+                                    th:href="@{'/admin/users/edit/' + ${user.id}}"
+                                    class="edit-btn">
+
+                                ✏ Edit
+
+                            </a>
+
+
+                            <!-- DELETE -->
+
+                            <a
+                                    th:if="${user.email != #authentication.name}"
+                                    th:href="@{'/admin/users/delete/' + ${user.id}}"
+                                    class="delete-btn"
+                                    onclick="return confirm('Are you sure you want to delete this user?');">
+
+                                🗑 Delete
+
+                            </a>
+
+
+                            <!-- CURRENT LOGGED-IN ADMIN -->
+
+                            <span
+                                    th:if="${user.email == #authentication.name}"
+                                    class="protected-text">
+
+                                🔒 Current Account
+
+                            </span>
+
+
+                        </div>
+
+                    </td>
+
+
+                </tr>
+
+
+                <!-- =====================================
+                     NO USERS
+                ====================================== -->
+
+                <tr
+                        th:if="${#lists.isEmpty(users)}">
+
+                    <td
+                            colspan="6"
+                            class="empty">
+
+                        👥 No registered users found.
+
+                    </td>
+
+                </tr>
+
+
+                </tbody>
+
+            </table>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+
+</html>
